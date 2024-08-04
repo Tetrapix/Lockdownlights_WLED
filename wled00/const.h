@@ -9,8 +9,8 @@
 
 //Defaults
 #define DEFAULT_CLIENT_SSID "Your_Network"
-#define DEFAULT_AP_SSID     "WLED-AP"
-#define DEFAULT_AP_PASS     "wled1234"
+#define DEFAULT_AP_SSID     "Lockdownlights-AP"
+#define DEFAULT_AP_PASS     ""
 #define DEFAULT_OTA_PASS    "wledota"
 #define DEFAULT_MDNS_NAME   "x"
 
@@ -422,7 +422,7 @@
 #endif
 
 #ifndef ABL_MILLIAMPS_DEFAULT
-  #define ABL_MILLIAMPS_DEFAULT 850   // auto lower brightness to stay close to milliampere limit
+  #define ABL_MILLIAMPS_DEFAULT 2000   //lockdownlights // auto lower brightness to stay close to milliampere limit
 #else
   #if ABL_MILLIAMPS_DEFAULT == 0      // disable ABL
   #elif ABL_MILLIAMPS_DEFAULT < 250   // make sure value is at least 250
@@ -477,7 +477,7 @@
 #endif
 
 #ifndef DEFAULT_LED_COUNT
-  #define DEFAULT_LED_COUNT 30
+  #define DEFAULT_LED_COUNT 100 //lockdownlights
 #endif
 
 #define INTERFACE_UPDATE_COOLDOWN 1000 // time in ms to wait between websockets, alexa, and MQTT updates

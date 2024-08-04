@@ -571,8 +571,8 @@ WLED_GLOBAL byte notificationSentCallMode _INIT(CALL_MODE_INIT);
 WLED_GLOBAL uint8_t notificationCount _INIT(0);
 
 // effects
-WLED_GLOBAL byte effectCurrent _INIT(0);
-WLED_GLOBAL byte effectSpeed _INIT(128);
+WLED_GLOBAL byte effectCurrent _INIT(9); //lockdownlights start effect number 9 for rainbow
+WLED_GLOBAL byte effectSpeed _INIT(2); // old:128
 WLED_GLOBAL byte effectIntensity _INIT(128);
 WLED_GLOBAL byte effectPalette _INIT(0);
 WLED_GLOBAL bool stateChanged _INIT(false);

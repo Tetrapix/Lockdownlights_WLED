@@ -526,7 +526,7 @@ void WLED::beginStrip()
   if (bootPreset > 0) {
     applyPreset(bootPreset, CALL_MODE_INIT);
   }
-  colorUpdated(CALL_MODE_INIT);
+  colorUpdated(CALL_MODE_INIT); //lockdownlights just interesting nothing changed
 
   // init relay pin
   if (rlyPin>=0)

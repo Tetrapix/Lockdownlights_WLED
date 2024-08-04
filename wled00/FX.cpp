@@ -435,7 +435,7 @@ uint16_t mode_rainbow(void) {
 static const char _data_FX_MODE_RAINBOW[] PROGMEM = "Colorloop@!,Saturation;;!;01";
 
 
-/*
+/*Lockdownlights effect with effectspeed 2 and intensity 134
  * Cycles a rainbow over the entire string of LEDs.
  */
 uint16_t mode_rainbow_cycle(void) {
