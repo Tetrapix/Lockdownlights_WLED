@@ -36,6 +36,11 @@
 
 #define indexToVStrip(index, stripNr) ((index) | (int((stripNr)+1)<<16))
 
+//Lockdownlights variables
+uint16_t LL_dir;
+uint16_t LL_LED_cnt, LL_max;
+bool LL_glowwurm = false;
+
 // effect utility functions
 uint8_t sin_gap(uint16_t in) {
   if (in & 0x100) return 0;
@@ -439,13 +444,40 @@ static const char _data_FX_MODE_RAINBOW[] PROGMEM = "Colorloop@!,Saturation;;!;0
  * Cycles a rainbow over the entire string of LEDs.
  */
 uint16_t mode_rainbow_cycle(void) {
+  //Lockdownligts Glühwurm effekt variablen
+  const unsigned long timepoint = 120000, LED_durr = 50;//every 10 sec for 100 ms one led is turning on
+  //atndard effekt variablem
   uint16_t counter = (strip.now * ((SEGMENT.speed >> 2) +2)) & 0xFFFF;
   counter = counter >> 8;
 
+ 
+  //standard effekt
   for (int i = 0; i < SEGLEN; i++) {
     //intensity/29 = 0 (1/16) 1 (1/8) 2 (1/4) 3 (1/2) 4 (1) 5 (2) 6 (4) 7 (8) 8 (16)
     uint8_t index = (i * (16 << (SEGMENT.intensity /29)) / SEGLEN) + counter;
     SEGMENT.setPixelColor(i, SEGMENT.color_wheel(index));
+  }
+
+  if (!LL_glowwurm){
+    //erkennen wann der Zeitpunkt für den Glühwurm effekt erreicht ist
+    if((millis() % timepoint) > (timepoint-40)) {LL_glowwurm = true; LL_dir = 1; LL_LED_cnt = 0;}
+  }else{
+    //Richtungswechsel, wenn Glühwurm am ende der Lichterkette
+    if (LL_LED_cnt == (SEGLEN - 1)){
+      LL_dir = -1;
+      //Quickfix: mit SEGLEN hat es nicht funktioniert, deshlab musste LL-max geschaffen werden
+      LL_max = LL_LED_cnt;
+    }
+    //here are the magic happens
+    SEGMENT.setPixelColor(LL_LED_cnt, SEGMENT.color_wheel(0));
+    //immer eins hoch zählen wenn eine Zeitperiode (LED_durr) für eine LED abgelaufen ist
+    if (LL_dir == 1){
+      if ((millis() % timepoint) > (LED_durr * LL_LED_cnt)) LL_LED_cnt = LL_LED_cnt + LL_dir;
+    }else{//oder runter zählen, wenn am Ende angekommen
+      if ((millis() % timepoint) > (LED_durr * (LL_max - LL_LED_cnt + LL_max))) LL_LED_cnt = LL_LED_cnt + LL_dir;
+    }
+    //raus aus dem Effekt, wenn der Glühwurm wieder gelandet ist
+    if (LL_LED_cnt < 1) LL_glowwurm = false;
   }
 
   return FRAMETIME;
