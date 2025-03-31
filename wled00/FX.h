@@ -125,7 +125,8 @@
 
 #define FX_MODE_STATIC                   0
 #define FX_MODE_BLINK                    1
-#define FX_MODE_BREATH                   2
+#define FX_MODE_LOCKDOWN_LIGHTS          2
+#define FX_MODE_BREATH                   53//i was lazy
 #define FX_MODE_COLOR_WIPE               3
 #define FX_MODE_COLOR_WIPE_RANDOM        4
 #define FX_MODE_RANDOM_COLOR             5

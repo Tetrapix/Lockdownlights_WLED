@@ -440,17 +440,35 @@ uint16_t mode_rainbow(void) {
 static const char _data_FX_MODE_RAINBOW[] PROGMEM = "Colorloop@!,Saturation;;!;01";
 
 
-/*Lockdownlights effect with effectspeed 2 and intensity 134
+
+/*
  * Cycles a rainbow over the entire string of LEDs.
  */
 uint16_t mode_rainbow_cycle(void) {
+  unsigned counter = (strip.now * ((SEGMENT.speed >> 2) +2)) & 0xFFFF;
+  counter = counter >> 8;
+
+  for (unsigned i = 0; i < SEGLEN; i++) {
+    //intensity/29 = 0 (1/16) 1 (1/8) 2 (1/4) 3 (1/2) 4 (1) 5 (2) 6 (4) 7 (8) 8 (16)
+    uint8_t index = (i * (16 << (SEGMENT.intensity /29)) / SEGLEN) + counter;
+    SEGMENT.setPixelColor(i, SEGMENT.color_wheel(index));
+  }
+
+  return FRAMETIME;
+}
+static const char _data_FX_MODE_RAINBOW_CYCLE[] PROGMEM = "Rainbow@!,Size;;!";
+
+
+/*Lockdownlights effect with effectspeed 2 and intensity 134
+ * Cycles a rainbow over the entire string of LEDs.
+ */
+uint16_t mode_rainbow_cycle_lockdown_lights(void) {
   //Lockdownligts Glühwurm effekt variablen
   const unsigned long timepoint = 120000, LED_durr = 50;//every 10 sec for 100 ms one led is turning on
   //atndard effekt variablem
   uint16_t counter = (strip.now * ((SEGMENT.speed >> 2) +2)) & 0xFFFF;
   counter = counter >> 8;
 
- 
   //standard effekt
   for (int i = 0; i < SEGLEN; i++) {
     //intensity/29 = 0 (1/16) 1 (1/8) 2 (1/4) 3 (1/2) 4 (1) 5 (2) 6 (4) 7 (8) 8 (16)
@@ -482,8 +500,7 @@ uint16_t mode_rainbow_cycle(void) {
 
   return FRAMETIME;
 }
-static const char _data_FX_MODE_RAINBOW_CYCLE[] PROGMEM = "Rainbow@!,Size;;!";
-
+static const char _data_FX_MODE_LOCKDOWN_LIGHTS[] PROGMEM = "Lockdownlights@!,Size;;!";
 
 /*
  * Alternating pixels running function.
@@ -7727,8 +7744,9 @@ void WS2812FX::setupEffectData() {
   }
   // now replace all pre-allocated effects
   // --- 1D non-audio effects ---
+  addEffect(FX_MODE_LOCKDOWN_LIGHTS, &mode_rainbow_cycle_lockdown_lights, _data_FX_MODE_LOCKDOWN_LIGHTS);
   addEffect(FX_MODE_BLINK, &mode_blink, _data_FX_MODE_BLINK);
-  addEffect(FX_MODE_BREATH, &mode_breath, _data_FX_MODE_BREATH);
+  //addEffect(FX_MODE_BREATH, &mode_breath, _data_FX_MODE_BREATH);
   addEffect(FX_MODE_COLOR_WIPE, &mode_color_wipe, _data_FX_MODE_COLOR_WIPE);
   addEffect(FX_MODE_COLOR_WIPE_RANDOM, &mode_color_wipe_random, _data_FX_MODE_COLOR_WIPE_RANDOM);
   addEffect(FX_MODE_RANDOM_COLOR, &mode_random_color, _data_FX_MODE_RANDOM_COLOR);

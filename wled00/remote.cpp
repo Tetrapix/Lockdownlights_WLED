@@ -155,7 +155,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     case WIZMOTE_BUTTON_ON             : setOn();                                         stateUpdated(CALL_MODE_BUTTON); break;
     case WIZMOTE_BUTTON_OFF            : setOff();                                        stateUpdated(CALL_MODE_BUTTON); break;
     case WIZMOTE_BUTTON_ONE            : presetWithFallback(1, FX_MODE_STATIC,        0); resetNightMode(); break;
-    case WIZMOTE_BUTTON_TWO            : presetWithFallback(2, FX_MODE_BREATH,        0); resetNightMode(); break;
+    case WIZMOTE_BUTTON_TWO            : presetWithFallback(2, FX_MODE_LOCKDOWN_LIGHTS,        0); resetNightMode(); break;
     case WIZMOTE_BUTTON_THREE          : presetWithFallback(3, FX_MODE_FIRE_FLICKER,  0); resetNightMode(); break;
     case WIZMOTE_BUTTON_FOUR           : presetWithFallback(4, FX_MODE_RAINBOW,       0); resetNightMode(); break;
     case WIZMOTE_BUTTON_NIGHT          : activateNightMode();                             stateUpdated(CALL_MODE_BUTTON); break;
