@@ -61,7 +61,7 @@
 #endif
 
 #ifndef DEFAULT_LED_COLOR_ORDER
-  #define DEFAULT_LED_COLOR_ORDER COL_ORDER_GRB  //default to GRB
+  #define DEFAULT_LED_COLOR_ORDER COL_ORDER_RGB  //default to GRB...changed to RGB for WS2811 for lockdownlights
 #endif
 
 
